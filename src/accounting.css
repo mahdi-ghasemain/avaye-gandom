@@ -1,0 +1,35 @@
+/* استایل بخش‌های حسابداری آوای گندم */
+.sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+.sidebar nav { max-height: calc(100vh - 320px); overflow-y: auto; }
+.workspace-grid { display: grid; grid-template-columns: minmax(320px, 390px) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media(max-width:1100px){ .workspace-grid{ grid-template-columns: 1fr; } }
+.invoice-line { display: grid; grid-template-columns: 1fr 70px 110px auto; gap: 6px; margin-bottom: 8px; align-items: center; }
+.invoice-line select, .invoice-line input { border: 1px solid #e2eae2; background: #fbfcfa; border-radius: 8px; padding: 9px; font-size: 11px; width: 100%; }
+.journal-line { display: grid; grid-template-columns: 1fr 90px 90px auto; gap: 6px; margin-bottom: 8px; }
+.journal-line input { border: 1px solid #e2eae2; background: #fbfcfa; border-radius: 8px; padding: 9px; font-size: 11px; width: 100%; }
+.journal-list { display: grid; gap: 12px; }
+.journal-item { border: 1px solid #edf1ed; border-radius: 12px; padding: 12px; background: #fbfdfb; }
+.journal-item table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
+.journal-item th, .journal-item td { padding: 7px 8px; border-bottom: 1px solid #eef3ee; text-align: right; }
+.table-scroll { overflow-x: auto; }
+.table-scroll table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.table-scroll th, .table-scroll td { padding: 9px 8px; border-bottom: 1px solid #eef3ee; text-align: right; vertical-align: top; }
+.table-scroll thead th { color: #849589; font-weight: 700; background: #f7faf7; }
+.pos { color: #1c7a4a; } .neg { color: #c0392b; }
+.table-action.danger { background: #fdeeee; color: #b3402e; }
+.table-action.danger:hover { background: #f8d9d4; }
+.pill { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 10px; background: #eef3ee; color: #5b6d60; }
+.pill.pending { background: #fff4d6; color: #9a7414; }
+.pill.collected { background: #e3f5e9; color: #1c7a4a; }
+.pill.bounced { background: #fde3e3; color: #b3402e; }
+.pill.spent { background: #e4ecf8; color: #2f5496; }
+.pill.returned { background: #eee; color: #666; }
+.status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 12px 0; }
+.status-grid button { padding: 12px; border-radius: 9px; font-size: 11px; font-weight: 700; }
+.report-note.warn { background: #fff8e6; border: 1px solid #f0dfae; color: #8a6d1b; }
+.card-head select { border: 1px solid #e2eae2; border-radius: 8px; padding: 7px 10px; font-size: 11px; background: #fff; }
+.form-card form { display: grid; gap: 12px; }
+.form-card label { display: grid; gap: 6px; font-size: 11px; color: #5b6d60; font-weight: 700; }
+.form-card input, .form-card select { border: 1px solid #e2eae2; background: #fbfcfa; border-radius: 9px; padding: 10px 12px; font-size: 12px; width: 100%; }
+.form-card input:focus, .form-card select:focus { border-color: #4ba674; outline: none; }
+@media(max-width:500px){ .invoice-line{ grid-template-columns: 1fr 60px; } .journal-line{ grid-template-columns: 1fr 1fr; } }

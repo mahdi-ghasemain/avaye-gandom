@@ -1,0 +1,20 @@
+appId: ir.avayegandom.desktop
+productName: Avaye Gandom
+directories:
+  output: release
+  buildResources: build
+files:
+  - dist/**/*
+  - electron/**/*
+  - '!electron/**/*.test.cjs'
+  - package.json
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: build/icon.png
+nsis:
+  artifactName: AvayeGandom-Setup-${version}-${arch}.${ext}
+  oneClick: false
+  allowToChangeInstallationDirectory: true
