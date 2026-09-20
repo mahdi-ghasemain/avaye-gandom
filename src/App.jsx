@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import logo from './assets/avaye-gandom-logo.png'
+import basket from './assets/bread-basket.jpg'
 import ProductsPage from './ProductsPage.jsx'
 import { PersonsPage, InvoicesPage, InventoryPage } from './pages/personsInvoicesStock.jsx'
 import { CashPage, ChequesPage, JournalPage, OrgPage, PayrollPage } from './pages/cashChequeJournalOrgPayroll.jsx'
@@ -113,17 +113,17 @@ function App() {
 
   return <div className="shell" dir="rtl">
     <aside className="sidebar">
-      <div className="brand"><span className="brand-logo"><img src={logo} alt="" /></span><div><strong>آوای گندم</strong><small>حسابداری فروشگاه</small></div></div>
+      <div className="brand"><span className="brand-logo"><img src={basket} alt="سبد نان آوای گندم" /></span><div><strong>آوای گندم</strong><small>حسابداری فروشگاه</small></div></div>
       <span className="nav-label">فضای کار</span>
       <nav aria-label="منوی اصلی">{menu.map(([id, icon, label]) => <button key={id} className={page === id ? 'active' : ''} onClick={() => navigate(id)}><span>{icon}</span>{label}</button>)}</nav>
-      <div className="shop"><span className="shop-icon"><img src={logo} alt="" /></span><div><strong>فروشگاه آوای گندم</strong><small>{desktop ? 'ذخیرهٔ محلی SQLite' : 'نسخهٔ نمایشی مرورگر'}</small></div><i /></div>
+      <div className="shop"><span className="shop-icon"><img src={basket} alt="سبد نان" /></span><div><strong>فروشگاه آوای گندم</strong><small>{desktop ? 'ذخیرهٔ محلی SQLite' : 'نسخهٔ نمایشی مرورگر'}</small></div><i /></div>
     </aside>
     <main>
       <header><span>آوای گندم <b>/</b> {menu.find(([id]) => id === page)?.[2]}</span><div><span className="date">◷ &nbsp; {date}</span><span className="demo">● &nbsp; {desktop ? 'نسخهٔ کامل حسابداری' : 'نمایش مرورگر؛ بدون ذخیره دائم'}</span></div></header>
       <div className="content">
         {notice && <div className="notice" role="status">{notice}<button onClick={() => setNotice('')} aria-label="بستن پیام">×</button></div>}
         {page === 'home' && <>
-          <section className="hero"><div><span>پنل مدیریت فروشگاه</span><h1>سلام، خوش آمدی 👋</h1><p>همهٔ بخش‌های حسابداری فعال است: فاکتور چندقلمی، انبار، چک، سند دوبل، حقوق، شعبه و سال مالی.</p><div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}><button onClick={() => navigate('sales')}>＋ &nbsp; ثبت فروش جدید</button><button className="secondary-button" onClick={() => navigate('invoices')}>فاکتور چندقلمی</button></div></div><div className="hero-art"><img src={logo} alt="نشان آوای گندم" /></div></section>
+          <section className="hero"><div><span>پنل مدیریت فروشگاه</span><h1>سلام، خوش آمدی 👋</h1><p>همهٔ بخش‌های حسابداری فعال است: فاکتور چندقلمی، انبار، چک، سند دوبل، حقوق، شعبه و سال مالی.</p><div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}><button onClick={() => navigate('sales')}>＋ &nbsp; ثبت فروش جدید</button><button className="secondary-button" onClick={() => navigate('invoices')}>فاکتور چندقلمی</button></div></div><div className="hero-art"><img src={basket} alt="سبد نان آوای گندم" /></div></section>
           <div className="section-title"><div><h2>خلاصهٔ امروز</h2><p>اطلاعات ثبت‌شده برای امروز</p></div><span>{date}</span></div>
           <div className="stats"><Stat icon="◫" label="فروش امروز" value={revenue} unit="تومان" color="green" /><Stat icon="◇" label="هزینه‌های امروز" value={spent} unit="تومان" color="orange" /><Stat icon="💰" label="خالص صندوق" value={cashIn - cashOut} unit="تومان" color="blue" /><Stat icon="◈" label="محصولات" value={products.length} unit="محصول" color="purple" /></div>
           <div className="stats"><Stat icon="🧾" label="فروش فاکتوری" value={invoiceRevenue} unit="تومان" color="green" /><Stat icon="📦" label="خرید فاکتوری" value={invoiceCost} unit="تومان" color="orange" /><Stat icon="✉" label="چک نزد صندوق" value={pendingCheques} unit="تومان" color="blue" /><Stat icon="👥" label="حقوق پرداخت‌نشده" value={unpaidPayroll} unit="تومان" color="purple" /></div>

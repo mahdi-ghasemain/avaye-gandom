@@ -1,4 +1,7 @@
 /* استایل بخش‌های حسابداری آوای گندم */
+.brand-logo, .shop-icon { border-radius: 50% !important; overflow: hidden; }
+.brand-logo img, .shop-icon img { width: 100% !important; height: 100% !important; object-fit: cover; transform: none !important; }
+.hero-art img { object-fit: cover !important; }
 .sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
 .sidebar nav { max-height: calc(100vh - 320px); overflow-y: auto; }
 .workspace-grid { display: grid; grid-template-columns: minmax(320px, 390px) minmax(0, 1fr); gap: 18px; align-items: start; }
