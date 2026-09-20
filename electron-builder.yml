@@ -13,8 +13,10 @@ win:
     - target: nsis
       arch:
         - x64
-  icon: build/icon.png
+  icon: build/icon.ico
 nsis:
   artifactName: AvayeGandom-Setup-${version}-${arch}.${ext}
   oneClick: false
   allowToChangeInstallationDirectory: true
+  installerIcon: build/icon.ico
+  installerHeaderIcon: build/icon.ico
