@@ -1,16 +1,39 @@
-# React + Vite
+# آوای گندم
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+نرم‌افزار مدیریت فروشگاه نان فانتزی با رابط فارسی، مناسب ویندوز و گوشی Android.
 
-Currently, two official plugins are available:
+## امکانات
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- محصولات، موجودی و گردش انبار
+- فروش سریع و فاکتور چندقلمی
+- اشخاص، دریافت و پرداخت و چک‌ها
+- اسناد حسابداری، هزینه‌ها و گزارش‌ها
+- حقوق و دستمزد، شعبه و سال مالی
+- رابط واکنش‌گرا و سایدبار جمع‌شونده
+- نصب روی Android و اجرای آفلاین
 
-## React Compiler
+## نصب روی ویندوز
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+فایل `AvayeGandom-Setup` را از بخش [Releases](https://github.com/mahdi-ghasemain/avaye-gandom/releases/latest) دریافت کنید. اطلاعات ویندوز در SQLite و روی همان رایانه ذخیره می‌شود.
 
-## Expanding the Oxlint configuration
+## نصب روی Android
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+۱. [نسخه موبایل آوای گندم](https://mahdi-ghasemain.github.io/avaye-gandom/) را با Chrome باز کنید.
+
+۲. دکمه «نصب روی گوشی» را بزنید. اگر دکمه نمایش داده نشد، از منوی سه‌نقطه Chrome گزینه **Install app** یا **Add to Home screen** را انتخاب کنید.
+
+۳. برنامه با آیکون مستقل، حالت تمام‌صفحه و امکان اجرای آفلاین نصب می‌شود.
+
+اطلاعات موبایل داخل همان گوشی ذخیره می‌شود و به GitHub فرستاده نمی‌شود. پاک‌کردن داده‌های Chrome یا حذف برنامه می‌تواند اطلاعات را پاک کند.
+
+## توسعه
+
+```bash
+npm install
+npm run dev
+```
+
+```bash
+npm run build
+npm test
+```

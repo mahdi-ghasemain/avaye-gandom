@@ -3,7 +3,7 @@ import basket from './assets/bread-basket.jpg'
 import ProductsPage from './ProductsPage.jsx'
 import { PersonsPage, InvoicesPage, InventoryPage } from './pages/personsInvoicesStock.jsx'
 import { CashPage, ChequesPage, JournalPage, OrgPage, PayrollPage } from './pages/cashChequeJournalOrgPayroll.jsx'
-import { loadDemoState, applyDemo } from './storeClient.js'
+import { loadDemoState, applyDemo, restoreDemoState } from './storeClient.js'
 import { format } from './pages/ui.jsx'
 import Icon from './Icons.jsx'
 import './App.css'
@@ -31,6 +31,8 @@ function App() {
   const desktop = Boolean(window.avayeAPI)
   const [page, setPage] = useState('home')
   const [sidebarOpen, setSidebarOpen] = useState(() => localStorage.getItem('sidebar-open') !== 'false')
+  const [installPrompt, setInstallPrompt] = useState(null)
+  const [installed, setInstalled] = useState(() => window.matchMedia('(display-mode: standalone)').matches)
   const [state, setState] = useState(EMPTY)
   const [notice, setNotice] = useState('')
   const [productId, setProductId] = useState('')
@@ -78,6 +80,14 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    const captureInstall = (event) => { event.preventDefault(); setInstallPrompt(event) }
+    const markInstalled = () => { setInstalled(true); setInstallPrompt(null) }
+    window.addEventListener('beforeinstallprompt', captureInstall)
+    window.addEventListener('appinstalled', markInstalled)
+    return () => { window.removeEventListener('beforeinstallprompt', captureInstall); window.removeEventListener('appinstalled', markInstalled) }
+  }, [])
+
   async function addSale(event) {
     event.preventDefault()
     const count = Number(quantity)
@@ -102,15 +112,40 @@ function App() {
     } catch (error) { setNotice(`خطا: ${error.message}`) }
   }
   async function backupData() {
-    try { const saved = await window.avayeAPI.backup(); if (saved) setNotice(`نسخهٔ پشتیبان ذخیره شد: ${saved}`) }
+    try {
+      if (!desktop) {
+        const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url; link.download = `avaye-gandom-mobile-${new Date().toISOString().slice(0, 10)}.json`; link.click()
+        URL.revokeObjectURL(url); setNotice('نسخهٔ پشتیبان موبایل دانلود شد.'); return
+      }
+      const saved = await window.avayeAPI.backup(); if (saved) setNotice(`نسخهٔ پشتیبان ذخیره شد: ${saved}`)
+    }
     catch (error) { setNotice(`خطا در پشتیبان‌گیری: ${error.message}`) }
   }
   async function restoreData() {
-    try { const next = await window.avayeAPI.restore(); if (next) { applyState(next); setNotice('اطلاعات از نسخهٔ پشتیبان بازگردانده شد.') } }
+    try {
+      if (!desktop) {
+        const input = document.createElement('input'); input.type = 'file'; input.accept = 'application/json,.json'
+        input.onchange = async () => {
+          try { const next = restoreDemoState(JSON.parse(await input.files[0].text())); setState(next); setNotice('اطلاعات موبایل از نسخهٔ پشتیبان بازگردانده شد.') }
+          catch (error) { setNotice(`خطا در بازیابی: ${error.message}`) }
+        }
+        input.click(); return
+      }
+      const next = await window.avayeAPI.restore(); if (next) { applyState(next); setNotice('اطلاعات از نسخهٔ پشتیبان بازگردانده شد.') }
+    }
     catch (error) { setNotice(`خطا در بازیابی: ${error.message}`) }
   }
   function navigate(next) { setPage(next); setNotice('') }
   function toggleSidebar() { setSidebarOpen((open) => { localStorage.setItem('sidebar-open', String(!open)); return !open }) }
+  async function installApp() {
+    if (!installPrompt) return
+    await installPrompt.prompt()
+    const choice = await installPrompt.userChoice
+    if (choice.outcome === 'accepted') setInstallPrompt(null)
+  }
 
   if (loading) return <div className="loading" dir="rtl">در حال بارگذاری اطلاعات آوای گندم…</div>
 
@@ -123,7 +158,7 @@ function App() {
       <div className="shop"><span className="shop-icon"><img src={basket} alt="سبد نان" /></span><div><strong>فروشگاه آوای گندم</strong><small>{desktop ? 'ذخیرهٔ محلی SQLite' : 'نسخهٔ نمایشی مرورگر'}</small></div><i /></div>
     </aside>
     <main>
-      <header><span className="header-title"><button className="mobile-menu" onClick={toggleSidebar} aria-label="نمایش منو"><Icon name="menu" /></button>آوای گندم <b>/</b> {menu.find(([id]) => id === page)?.[2]}</span><div><span className="date">◷ &nbsp; {date}</span><span className="demo">● &nbsp; {desktop ? 'نسخهٔ کامل حسابداری' : 'نمایش مرورگر؛ بدون ذخیره دائم'}</span></div></header>
+      <header><span className="header-title"><button className="mobile-menu" onClick={toggleSidebar} aria-label="نمایش منو"><Icon name="menu" /></button><span>آوای گندم <b>/</b> {menu.find(([id]) => id === page)?.[2]}</span></span><div>{installPrompt && !installed && <button className="install-app" onClick={installApp}>نصب روی گوشی</button>}<span className="date">◷ &nbsp; {date}</span><span className="demo">● &nbsp; {desktop ? 'نسخهٔ کامل حسابداری' : installed ? 'برنامهٔ نصب‌شده روی گوشی' : 'ذخیره روی همین دستگاه'}</span></div></header>
       <div className="content">
         {notice && <div className="notice" role="status">{notice}<button onClick={() => setNotice('')} aria-label="بستن پیام">×</button></div>}
         {page === 'home' && <>
@@ -165,7 +200,7 @@ function ReportsPage({ state, revenue, spent, backupData, restoreData, desktop }
     <div className="stats"><Stat icon="📒" label="جمع بدهکار اسناد" value={debitSum} unit="تومان" color="purple" /><Stat icon="📒" label="جمع بستانکار اسناد" value={creditSum} unit="تومان" color="purple" /><Stat icon={debitSum === creditSum ? '✓' : '×'} label="تراز اسناد دوبل" value={debitSum === creditSum ? 1 : 0} unit={debitSum === creditSum ? 'متوازن' : 'نامتوازن'} color={debitSum === creditSum ? 'green' : 'orange'} /><Stat icon="◫" label="فروش امروز" value={revenue} unit="تومان" color="green" /></div>
     <div className="report-note"><strong>ⓘ &nbsp; گزارش مدیریتی ساده</strong><p>سود = فروش − خرید فاکتوری − هزینه − حقوق پرداختی. مانده دقیق صندوق و ترازنامه رسمی را حسابدار باید با اسناد دوبل بازبینی کند. جمع امروز: فروش {format(revenue)} و هزینه {format(spent)}.</p></div>
     {state.products.length > 0 && <section className="card"><div className="card-head"><div><h3>سود تقریبی هر کالا</h3><p>بر اساس قیمت خرید و فروش ثبت‌شده</p></div></div><div className="table-scroll"><table><thead><tr><th>کالا</th><th>خرید</th><th>فروش</th><th>حاشیه</th><th>موجودی</th></tr></thead><tbody>{state.products.slice(0, 30).map((p) => <tr key={p.id}><td><strong>{p.name}</strong></td><td>{format(p.purchasePrice || 0)}</td><td>{format(p.price)}</td><td><b className={(p.price - (p.purchasePrice || 0)) >= 0 ? 'pos' : 'neg'}>{format(p.price - (p.purchasePrice || 0))}</b></td><td>{format(p.stock)}</td></tr>)}</tbody></table></div></section>}
-    <section className="card backup-card"><h3>پشتیبان‌گیری از اطلاعات</h3><p>نسخهٔ پشتیبان را در محل جداگانه‌ای نگه دار. بازیابی، اطلاعات فعلی را با فایل انتخابی جایگزین می‌کند.</p><div><button className="submit" onClick={backupData} disabled={!desktop}>دریافت نسخهٔ پشتیبان</button><button className="secondary-button" onClick={restoreData} disabled={!desktop}>بازگرداندن پشتیبان</button></div>{!desktop && <small>پشتیبان‌گیری در برنامهٔ نصب‌شدهٔ ویندوز فعال است؛ در مرورگر داده‌ها در همین دستگاه می‌ماند.</small>}</section></>
+    <section className="card backup-card"><h3>پشتیبان‌گیری از اطلاعات</h3><p>نسخهٔ پشتیبان را در محل جداگانه‌ای نگه دار. بازیابی، اطلاعات فعلی را با فایل انتخابی جایگزین می‌کند.</p><div><button className="submit" onClick={backupData}>دریافت نسخهٔ پشتیبان</button><button className="secondary-button" onClick={restoreData}>بازگرداندن پشتیبان</button></div>{!desktop && <small>در موبایل یک فایل JSON دانلود می‌شود؛ آن را در فضای امن نگه دارید.</small>}</section></>
 }
 
 function Stat({ icon, label, value, unit, color }) { return <div className="stat"><span className={`stat-icon ${color}`}>{icon}</span><small>{label}</small><div><strong>{format(value)}</strong> <small>{unit}</small></div></div> }

@@ -13,6 +13,7 @@
 .sidebar-toggle:hover { background: #eaf6ee; }
 .mobile-menu { display: none; border: 0; background: #edf6f0; color: #247b53; width: 34px; height: 34px; border-radius: 9px; place-items: center; }
 .header-title { display: flex; align-items: center; gap: 5px; }
+.install-app { border: 0; border-radius: 9px; padding: 8px 13px; background: #247b53; color: #fff; font-size: 10px; font-weight: 800; box-shadow: 0 6px 15px #247b5324; }
 .shell.sidebar-collapsed .sidebar { width: 78px; padding-inline: 11px; }
 .shell.sidebar-collapsed .brand { padding-inline: 5px; justify-content: center; }
 .shell.sidebar-collapsed .brand > div, .shell.sidebar-collapsed .nav-label, .shell.sidebar-collapsed .shop > div, .shell.sidebar-collapsed .shop i, .shell.sidebar-collapsed .sidebar nav button em { display: none; }
@@ -69,4 +70,30 @@
   .sidebar-toggle { left: 10px; top: 16px; }
   .shell.sidebar-collapsed .brand > div, .shell.sidebar-collapsed .nav-label, .shell.sidebar-collapsed .shop > div, .shell.sidebar-collapsed .shop i, .shell.sidebar-collapsed .sidebar nav button em { display: block; }
   .mobile-menu { display: grid; }
+  header { position: sticky; top: 0; z-index: 20; padding: 9px 12px; gap: 8px; backdrop-filter: blur(12px); background: #ffffffed; }
+  header > div { gap: 5px; }
+  .demo { max-width: 132px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .content { padding: 14px 11px 34px; }
+  .hero { min-height: 205px; padding: 23px 20px; border-radius: 15px; }
+  .hero h1 { font-size: 21px; }
+  .hero p { max-width: 82%; line-height: 1.9; }
+  .hero-art { width: 155px; height: 155px; left: -35px; top: 27px; opacity: .28; }
+  .stats, .report-stats { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px; }
+  .stat { min-height: 126px; padding: 13px; }
+  .home-grid { gap: 11px; margin-top: 14px; }
+  .card { padding: 15px; border-radius: 13px; }
+  .page-title { margin-bottom: 18px; }
+  .page-title h1 { font-size: 21px; }
+  .workspace-grid { gap: 11px; }
+  .form-actions { flex-wrap: wrap; }
+  .form-actions button { flex: 1; min-width: 115px; }
+  .table-scroll { margin-inline: -15px; padding-inline: 15px; }
+  table { font-size: 10px; }
+  th, td { padding: 10px 8px; }
+}
+@media(max-width:390px){
+  .header-title > span { display: none; }
+  .install-app { padding-inline: 9px; }
+  .stats, .report-stats { grid-template-columns: 1fr 1fr; }
+  .stat strong { font-size: 15px; }
 }

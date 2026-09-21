@@ -27,6 +27,14 @@ function saveDemo(state) {
   try { localStorage.setItem(KEY, JSON.stringify(state)) } catch { /* ignore */ }
 }
 
+export function restoreDemoState(input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) throw new Error('فایل پشتیبان معتبر نیست.')
+  const restored = { ...emptyState(), ...input }
+  for (const key of Object.keys(emptyState())) if (!Array.isArray(restored[key])) throw new Error('ساختار فایل پشتیبان معتبر نیست.')
+  saveDemo(restored)
+  return restored
+}
+
 function findProduct(state, id) {
   const p = state.products.find((x) => x.id === Number(id))
   if (!p) throw new Error('کالا پیدا نشد.')
