@@ -39,3 +39,31 @@ jobs:
         run: gh release edit $env:GITHUB_REF_NAME --draft=false
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-android:
+    needs: build-windows
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+      - name: Install dependencies
+        run: npm ci
+      - name: Build and sync Android app
+        run: npm run build && npx cap sync android
+      - name: Build installable APK
+        working-directory: android
+        run: chmod +x gradlew && ./gradlew assembleDebug
+      - name: Attach APK to GitHub Release
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk "AvayeGandom-Android-${GITHUB_REF_NAME}.apk"
+          gh release upload "$GITHUB_REF_NAME" "AvayeGandom-Android-${GITHUB_REF_NAME}.apk" --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

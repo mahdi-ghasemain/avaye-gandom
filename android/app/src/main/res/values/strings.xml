@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">آوای گندم</string>
+    <string name="title_activity_main">آوای گندم</string>
+    <string name="package_name">ir.avayegandom.mobile</string>
+    <string name="custom_url_scheme">ir.avayegandom.mobile</string>
+</resources>
