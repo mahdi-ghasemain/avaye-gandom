@@ -1,7 +1,7 @@
 {
   "name": "avaye-gandom",
   "private": true,
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "نرم‌افزار مدیریت فروشگاه نان فانتزی آوای گندم",
   "author": "Mahdi Ghasemian",
   "type": "module",
