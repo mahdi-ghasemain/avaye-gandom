@@ -20,3 +20,8 @@ nsis:
   allowToChangeInstallationDirectory: true
   installerIcon: build/icon.ico
   installerHeaderIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  createDesktopShortcut: always
+  createStartMenuShortcut: true
+  shortcutName: Avaye Gandom
+  runAfterFinish: true

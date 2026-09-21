@@ -2,8 +2,27 @@ const { app, BrowserWindow, dialog, ipcMain, shell } = require('electron')
 const path = require('node:path')
 const { createStore } = require('./store.cjs')
 let store
+let mainWindow
 
-function createWindow() {
+function createSplash() {
+  const splash = new BrowserWindow({
+    width: 460,
+    height: 330,
+    frame: false,
+    transparent: true,
+    resizable: false,
+    alwaysOnTop: true,
+    center: true,
+    skipTaskbar: true,
+    show: false,
+  })
+  splash.loadFile(path.join(__dirname, 'splash.html'))
+  splash.once('ready-to-show', () => splash.show())
+  return splash
+}
+
+function createWindow(splash) {
+  const startedAt = Date.now()
   const window = new BrowserWindow({
     width: 1280,
     height: 800,
@@ -11,6 +30,7 @@ function createWindow() {
     minHeight: 620,
     title: 'آوای گندم',
     backgroundColor: '#f7f8f5',
+    show: false,
     icon: path.join(__dirname, '../build/icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
@@ -21,13 +41,23 @@ function createWindow() {
   })
 
   window.loadFile(path.join(__dirname, '../dist/index.html'))
+  window.once('ready-to-show', () => {
+    const remaining = Math.max(0, 1400 - (Date.now() - startedAt))
+    setTimeout(() => {
+      if (splash && !splash.isDestroyed()) splash.close()
+      window.show()
+      window.focus()
+    }, remaining)
+  })
   window.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith('https://')) shell.openExternal(url)
     return { action: 'deny' }
   })
+  return window
 }
 
 app.whenReady().then(() => {
+  const splash = createSplash()
   store = createStore(path.join(app.getPath('userData'), 'avaye-gandom.sqlite'))
   ipcMain.handle('store:getState', () => store.getState())
   ipcMain.handle('store:addProduct', (_event, input) => store.addProduct(input))
@@ -79,9 +109,9 @@ app.whenReady().then(() => {
     if (confirmation.response !== 1) return null
     return store.restoreFrom(result.filePaths[0])
   })
-  createWindow()
+  mainWindow = createWindow(splash)
   app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow()
+    if (!mainWindow || mainWindow.isDestroyed()) mainWindow = createWindow()
   })
 })
 

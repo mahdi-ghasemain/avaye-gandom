@@ -12,17 +12,17 @@ npm run build
 npm run dist:win -- --publish never
 ```
 
-فایل نصب در پوشهٔ `release/` با نامی مانند `AvayeGandom-Setup-0.4.4-x64.exe` ساخته می‌شود.
+فایل نصب در پوشهٔ `release/` با نامی مانند `AvayeGandom-Setup-0.4.5-x64.exe` ساخته می‌شود.
 
 ## دانلود از GitHub
 
 ۱. کل پروژه را، همراه با `.github/workflows/windows-release.yml` و `package-lock.json`، در یک مخزن GitHub قرار بده.
 
-۲. نسخهٔ `package.json` و برچسب Git باید یکسان باشند. برای نسخهٔ کنونی، برچسب `v0.4.4` بساز و به GitHub بفرست:
+۲. نسخهٔ `package.json` و برچسب Git باید یکسان باشند. برای نسخهٔ کنونی، برچسب `v0.4.5` بساز و به GitHub بفرست:
 
 ```powershell
-git tag v0.4.4
-git push origin v0.4.4
+git tag v0.4.5
+git push origin v0.4.5
 ```
 
 ۳. در تب **Actions** منتظر تمام شدن «Windows release» بمان. فایل نصب در بخش **Releases** همان مخزن برای دانلود قرار می‌گیرد. فرستادن کد بدون برچسب نسخه فایل نصب منتشر نمی‌کند.

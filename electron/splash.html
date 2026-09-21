@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>آوای گندم</title>
+  <style>
+    *{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:Tahoma,"Segoe UI",sans-serif;background:transparent}
+    .splash{height:100%;display:grid;place-items:center;background:linear-gradient(145deg,#174b35,#2f8b61);color:#fff;border-radius:22px;border:1px solid #ffffff26;box-shadow:0 28px 70px #0b2b1d55;position:relative;overflow:hidden}
+    .splash:before,.splash:after{content:"";position:absolute;border-radius:50%;background:#ffffff08}.splash:before{width:250px;height:250px;left:-90px;top:-120px}.splash:after{width:190px;height:190px;right:-80px;bottom:-100px}
+    .content{text-align:center;position:relative;z-index:1}.bread-wrap{width:170px;height:96px;margin:0 auto 18px;position:relative;filter:drop-shadow(0 12px 13px #0a2f2055)}
+    .bread,.bread-fill{position:absolute;inset:0;border-radius:55% 55% 42% 42%/64% 64% 36% 36%;clip-path:polygon(7% 27%,18% 10%,40% 3%,66% 5%,86% 19%,96% 45%,91% 76%,72% 91%,29% 92%,9% 72%,3% 48%)}
+    .bread{background:#ffffff1f;border:2px solid #ffffff5c}.bread-fill{background:linear-gradient(145deg,#fff0b2 4%,#e3a93d 55%,#b87520);transform-origin:right;animation:bake 1.55s cubic-bezier(.65,0,.35,1) infinite}
+    .cuts{position:absolute;inset:0;z-index:2}.cuts i{position:absolute;width:27px;height:4px;background:#fff6d5b8;border-radius:99px;transform:rotate(-47deg);top:27px}.cuts i:nth-child(1){right:39px}.cuts i:nth-child(2){right:70px}.cuts i:nth-child(3){right:101px}
+    .steam{position:absolute;top:-24px;left:0;right:0;display:flex;justify-content:center;gap:19px}.steam i{width:4px;height:27px;border-radius:50%;border-left:3px solid #ffffffa8;animation:steam 1.4s ease-in-out infinite}.steam i:nth-child(2){animation-delay:.22s}.steam i:nth-child(3){animation-delay:.44s}
+    h1{font-size:27px;margin:0 0 7px;font-weight:800}p{font-size:12px;margin:0;color:#d8efe3}.dots{display:flex;justify-content:center;gap:6px;margin-top:19px;direction:ltr}.dots i{width:6px;height:6px;border-radius:50%;background:#fff;animation:dot 1.2s ease-in-out infinite}.dots i:nth-child(2){animation-delay:.16s}.dots i:nth-child(3){animation-delay:.32s}
+    @keyframes bake{0%{clip-path:inset(0 100% 0 0)}65%,100%{clip-path:inset(0 0 0 0)}}@keyframes steam{0%{transform:translateY(8px) scale(.7);opacity:0}45%{opacity:1}100%{transform:translateY(-9px) scale(1.05);opacity:0}}@keyframes dot{0%,60%,100%{opacity:.35;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+  </style>
+</head>
+<body><main class="splash"><div class="content"><div class="bread-wrap"><div class="steam"><i></i><i></i><i></i></div><div class="bread"></div><div class="bread-fill"></div><div class="cuts"><i></i><i></i><i></i></div></div><h1>آوای گندم</h1><p>در حال آماده‌سازی نرم‌افزار حسابداری…</p><div class="dots"><i></i><i></i><i></i></div></div></main></body>
+</html>
