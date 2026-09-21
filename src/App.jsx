@@ -5,23 +5,24 @@ import { PersonsPage, InvoicesPage, InventoryPage } from './pages/personsInvoice
 import { CashPage, ChequesPage, JournalPage, OrgPage, PayrollPage } from './pages/cashChequeJournalOrgPayroll.jsx'
 import { loadDemoState, applyDemo } from './storeClient.js'
 import { format } from './pages/ui.jsx'
+import Icon from './Icons.jsx'
 import './App.css'
 import './accounting.css'
 
 const menu = [
-  ['home', '▦', 'نمای کلی'],
-  ['sales', '◫', 'ثبت فروش'],
-  ['invoices', '🧾', 'فاکتورها'],
-  ['products', '◈', 'محصولات'],
-  ['inventory', '📦', 'انبار'],
-  ['persons', '◉', 'اشخاص'],
-  ['cash', '💰', 'دریافت و پرداخت'],
-  ['cheques', '✉', 'چک‌ها'],
-  ['journal', '📒', 'سند حسابداری'],
-  ['payroll', '👥', 'حقوق و دستمزد'],
-  ['org', '🏢', 'شعبه و سال مالی'],
-  ['expenses', '◇', 'هزینه‌ها'],
-  ['reports', '▤', 'گزارش‌ها'],
+  ['home', 'home', 'نمای کلی'],
+  ['sales', 'sales', 'ثبت فروش'],
+  ['invoices', 'invoices', 'فاکتورها'],
+  ['products', 'products', 'محصولات'],
+  ['inventory', 'inventory', 'انبار'],
+  ['persons', 'persons', 'اشخاص'],
+  ['cash', 'cash', 'دریافت و پرداخت'],
+  ['cheques', 'cheques', 'چک‌ها'],
+  ['journal', 'journal', 'سند حسابداری'],
+  ['payroll', 'payroll', 'حقوق و دستمزد'],
+  ['org', 'org', 'شعبه و سال مالی'],
+  ['expenses', 'expenses', 'هزینه‌ها'],
+  ['reports', 'reports', 'گزارش‌ها'],
 ]
 const date = new Date().toLocaleDateString('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' })
 const EMPTY = { products: [], sales: [], expenses: [], branches: [], fiscalYears: [], persons: [], invoices: [], stockVouchers: [], cashTransactions: [], cheques: [], journalVouchers: [], employees: [], payrolls: [], stockMovements: [] }
@@ -29,6 +30,7 @@ const EMPTY = { products: [], sales: [], expenses: [], branches: [], fiscalYears
 function App() {
   const desktop = Boolean(window.avayeAPI)
   const [page, setPage] = useState('home')
+  const [sidebarOpen, setSidebarOpen] = useState(() => localStorage.getItem('sidebar-open') !== 'false')
   const [state, setState] = useState(EMPTY)
   const [notice, setNotice] = useState('')
   const [productId, setProductId] = useState('')
@@ -108,18 +110,20 @@ function App() {
     catch (error) { setNotice(`خطا در بازیابی: ${error.message}`) }
   }
   function navigate(next) { setPage(next); setNotice('') }
+  function toggleSidebar() { setSidebarOpen((open) => { localStorage.setItem('sidebar-open', String(!open)); return !open }) }
 
   if (loading) return <div className="loading" dir="rtl">در حال بارگذاری اطلاعات آوای گندم…</div>
 
-  return <div className="shell" dir="rtl">
-    <aside className="sidebar">
+  return <div className={`shell ${sidebarOpen ? '' : 'sidebar-collapsed'}`} dir="rtl">
+    <aside className="sidebar" aria-label="نوار کناری">
+      <button className="sidebar-toggle" onClick={toggleSidebar} aria-label={sidebarOpen ? 'جمع کردن منو' : 'باز کردن منو'} title={sidebarOpen ? 'جمع کردن منو' : 'باز کردن منو'}><Icon name={sidebarOpen ? 'close' : 'menu'} size={19} /></button>
       <div className="brand"><span className="brand-logo"><img src={basket} alt="سبد نان آوای گندم" /></span><div><strong>آوای گندم</strong><small>حسابداری فروشگاه</small></div></div>
       <span className="nav-label">فضای کار</span>
-      <nav aria-label="منوی اصلی">{menu.map(([id, icon, label]) => <button key={id} className={page === id ? 'active' : ''} onClick={() => navigate(id)}><span>{icon}</span>{label}</button>)}</nav>
+      <nav aria-label="منوی اصلی">{menu.map(([id, icon, label]) => <button key={id} className={page === id ? 'active' : ''} onClick={() => navigate(id)} title={!sidebarOpen ? label : undefined}><span><Icon name={icon} /></span><em>{label}</em></button>)}</nav>
       <div className="shop"><span className="shop-icon"><img src={basket} alt="سبد نان" /></span><div><strong>فروشگاه آوای گندم</strong><small>{desktop ? 'ذخیرهٔ محلی SQLite' : 'نسخهٔ نمایشی مرورگر'}</small></div><i /></div>
     </aside>
     <main>
-      <header><span>آوای گندم <b>/</b> {menu.find(([id]) => id === page)?.[2]}</span><div><span className="date">◷ &nbsp; {date}</span><span className="demo">● &nbsp; {desktop ? 'نسخهٔ کامل حسابداری' : 'نمایش مرورگر؛ بدون ذخیره دائم'}</span></div></header>
+      <header><span className="header-title"><button className="mobile-menu" onClick={toggleSidebar} aria-label="نمایش منو"><Icon name="menu" /></button>آوای گندم <b>/</b> {menu.find(([id]) => id === page)?.[2]}</span><div><span className="date">◷ &nbsp; {date}</span><span className="demo">● &nbsp; {desktop ? 'نسخهٔ کامل حسابداری' : 'نمایش مرورگر؛ بدون ذخیره دائم'}</span></div></header>
       <div className="content">
         {notice && <div className="notice" role="status">{notice}<button onClick={() => setNotice('')} aria-label="بستن پیام">×</button></div>}
         {page === 'home' && <>

@@ -2,8 +2,23 @@
 .brand-logo, .shop-icon { border-radius: 50% !important; overflow: hidden; }
 .brand-logo img, .shop-icon img { width: 100% !important; height: 100% !important; object-fit: cover; transform: none !important; }
 .hero-art img { object-fit: cover !important; }
-.sidebar { position: sticky; top: 0; height: 100vh; overflow-y: auto; }
-.sidebar nav { max-height: calc(100vh - 320px); overflow-y: auto; }
+.sidebar { position: sticky; top: 0; height: 100vh; overflow: visible; transition: width .25s ease, padding .25s ease; }
+.sidebar nav { min-height: 0; overflow: hidden; display: grid; grid-template-rows: repeat(13, minmax(0, 1fr)); gap: 3px; flex: 1; }
+.sidebar nav button { min-height: 0; padding: 5px 12px; position: relative; transition: background .18s ease, color .18s ease, transform .18s ease; }
+.sidebar nav button:hover { transform: translateX(-2px); }
+.sidebar nav button span { flex: 0 0 23px; height: 27px; display: grid; place-items: center; }
+.sidebar nav button em { font-style: normal; white-space: nowrap; }
+.app-icon { display: block; }
+.sidebar-toggle { position: absolute; left: -14px; top: 76px; width: 29px; height: 29px; border: 1px solid #dfe9e1; border-radius: 9px; background: #fff; color: #287d54; display: grid; place-items: center; z-index: 5; box-shadow: 0 5px 16px #17372618; cursor: pointer; }
+.sidebar-toggle:hover { background: #eaf6ee; }
+.mobile-menu { display: none; border: 0; background: #edf6f0; color: #247b53; width: 34px; height: 34px; border-radius: 9px; place-items: center; }
+.header-title { display: flex; align-items: center; gap: 5px; }
+.shell.sidebar-collapsed .sidebar { width: 78px; padding-inline: 11px; }
+.shell.sidebar-collapsed .brand { padding-inline: 5px; justify-content: center; }
+.shell.sidebar-collapsed .brand > div, .shell.sidebar-collapsed .nav-label, .shell.sidebar-collapsed .shop > div, .shell.sidebar-collapsed .shop i, .shell.sidebar-collapsed .sidebar nav button em { display: none; }
+.shell.sidebar-collapsed .sidebar nav button { justify-content: center; padding-inline: 8px; }
+.shell.sidebar-collapsed .sidebar nav button span { flex-basis: 27px; }
+.shell.sidebar-collapsed .shop { justify-content: center; padding: 7px; }
 .workspace-grid { display: grid; grid-template-columns: minmax(320px, 390px) minmax(0, 1fr); gap: 18px; align-items: start; }
 @media(max-width:1100px){ .workspace-grid{ grid-template-columns: 1fr; } }
 .invoice-line { display: grid; grid-template-columns: 1fr 70px 110px auto; gap: 6px; margin-bottom: 8px; align-items: center; }
@@ -36,3 +51,22 @@
 .form-card input, .form-card select { border: 1px solid #e2eae2; background: #fbfcfa; border-radius: 9px; padding: 10px 12px; font-size: 12px; width: 100%; }
 .form-card input:focus, .form-card select:focus { border-color: #4ba674; outline: none; }
 @media(max-width:500px){ .invoice-line{ grid-template-columns: 1fr 60px; } .journal-line{ grid-template-columns: 1fr 1fr; } }
+@media(max-height:760px) and (min-width:701px){
+  .sidebar { padding-top: 14px; padding-bottom: 10px; }
+  .brand { padding-bottom: 10px; }
+  .nav-label { padding-bottom: 5px; }
+  .sidebar nav button { font-size: 11px; padding-block: 3px; }
+  .sidebar nav button span { height: 24px; }
+  .shop { margin-top: 5px; padding: 6px; }
+  .shop-icon { width: 29px; height: 29px; }
+}
+@media(max-width:700px){
+  .shell { display: block; }
+  .sidebar { position: fixed; right: 0; top: 0; width: 250px !important; height: 100vh; z-index: 30; padding: 14px 12px; box-shadow: -12px 0 35px #17372620; transform: translateX(0); transition: transform .25s ease; }
+  .shell.sidebar-collapsed .sidebar { transform: translateX(110%); }
+  .sidebar nav { display: grid; grid-template-rows: repeat(13, minmax(0, 1fr)); overflow: hidden; }
+  .sidebar nav button { font-size: 11px; }
+  .sidebar-toggle { left: 10px; top: 16px; }
+  .shell.sidebar-collapsed .brand > div, .shell.sidebar-collapsed .nav-label, .shell.sidebar-collapsed .shop > div, .shell.sidebar-collapsed .shop i, .shell.sidebar-collapsed .sidebar nav button em { display: block; }
+  .mobile-menu { display: grid; }
+}
